@@ -31,10 +31,11 @@ private Environment env;
 
 	사용하고자 하는 메소드내에서 getProperty를 이용하여 application.yml의 내용을 불러온다.
 	
-	2) @Value 사용
-		- vo에서 yml파일에서 가져오고자하는 데이터값을 저장한다.
-		- controller에서 저장된 값을 불러오기 위해 autowired 어노테이션을 이용해
-		  vo를 불러와 해당 메소드안에서 return 시킨다.  
+	
+2) @Value 사용
+	- vo에서 yml파일에서 가져오고자하는 데이터값을 저장한다.
+	- controller에서 저장된 값을 불러오기 위해 autowired 어노테이션을 이용해
+	  vo를 불러와 해당 메소드안에서 return 시킨다.  
 		  
    @GetMapping("/welcome")
     public String welcome(){
