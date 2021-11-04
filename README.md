@@ -216,5 +216,28 @@ LIst로 코드로 추가
 //@JsonInclude의 경우 null이 존재한다면 보여줄 필요가 없기때문에
 null을 처리하기 위해서 주입한다.
 
+# Catalog Microservice
 
+사용자가 주문하기 전에 상품목록을 조회하기 위한 용도
+상품목록 확인이 가능한 정도로만 만듦
+
+1. dependency 
+	: { Lombok, dev tools, Web, JPA, Eureka Client, h2database, modelmapper }
+
+2. yml
+	: 랜덤포트, h2연결, jpa설정(초기에 만들어줘야할 데이터들을 sql파일에 등록해놓고
+	  해당 sql을 기동과 함게 자동으로 insert하게끔), 나머지 설정은 user-service와 동일 }
+3. 초기 생성 db를 위해 'resources'파일 내부에 data.sql파일을 생성해
+    쿼리문을 넣어 놓는다.
+
+# Order Microservice
+
+사용자 주문, 주문내역 기능을 위한 용도
+//직렬화를 넣는 이유: 가지고 있는 객체를 전송하거나 데이터베이스에 보관하기 위해서 사용하는 것.
+
+1. dependency 
+	: { Lombok, dev tools, Web, jpa, eureka client, h2 database(버전 추가하기), modelmapper }
+
+2. yml
+	: 랜덤포트, h2연결, 
 
