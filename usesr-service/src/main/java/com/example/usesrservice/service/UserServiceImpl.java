@@ -3,12 +3,17 @@ package com.example.usesrservice.service;
 import com.example.usesrservice.dto.UserDTO;
 import com.example.usesrservice.jpa.UserEntity;
 import com.example.usesrservice.jpa.UserRepository;
+import com.example.usesrservice.vo.ResponseOrder;
+import com.example.usesrservice.vo.ResponseUser;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -41,4 +46,24 @@ public class UserServiceImpl implements UserService {
         return returnUserDTO;
     }
 
+    @Override
+    public UserDTO getUserByUserId(String userId) {
+        UserEntity userEntity = userRepository.findByUserId(userId);
+
+        if(userEntity == null)
+            throw new UsernameNotFoundException("User not fount");
+
+        UserDTO userDTO = new ModelMapper().map(userEntity, UserDTO.class);
+        //주문서비스 완성시키기
+        List<ResponseOrder> orders = new ArrayList<>();
+        userDTO.setOrders(orders);
+
+        return userDTO;
+    }
+
+    @Override
+    public Iterable<UserEntity> getUserByAll() {
+        return userRepository.findAll();    //전체데이터가져오기
+
+    }
 }

@@ -1,6 +1,7 @@
 package com.example.usesrservice.controller;
 
 import com.example.usesrservice.dto.UserDTO;
+import com.example.usesrservice.jpa.UserEntity;
 import com.example.usesrservice.service.UserService;
 import com.example.usesrservice.vo.Greeting;
 import com.example.usesrservice.vo.RequestUser;
@@ -13,8 +14,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @RestController
-@RequestMapping("/")
+@RequestMapping("/user-service")
 public class UserController {
 
     private Environment env;
@@ -51,6 +55,29 @@ public class UserController {
         ResponseUser responseUser = mapper.map(userDTO, ResponseUser.class);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(responseUser);
+    }
+    @GetMapping("/users")
+    public ResponseEntity<List<ResponseUser>> getUsers(){
+        //1. UserEntity 가져오기
+        Iterable<UserEntity> userList = userService.getUserByAll();
+        //2. UserEntity -> REsponseUser로 변경하기 (반복문을 쓰기에 List로)
+        List<ResponseUser> result = new ArrayList<>();
+        userList.forEach(v -> {
+            result.add(new ModelMapper().map(v,ResponseUser.class));
+        });
+
+        return ResponseEntity.status(HttpStatus.OK).body(result);
+    }
+
+    @GetMapping("/users/{userId}")
+    public ResponseEntity<ResponseUser> getUser(@PathVariable("userId") String userId){
+        //1. UserEntity 가져오기
+        UserDTO userDTO = userService.getUserByUserId(userId);
+        //2. UserEntity -> ResponseUser로 변경하기
+        ResponseUser returnUser = new ModelMapper().map(userDTO, ResponseUser.class);
+
+
+        return ResponseEntity.status(HttpStatus.OK).body(returnUser);
     }
 
 }
