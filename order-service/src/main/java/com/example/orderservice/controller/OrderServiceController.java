@@ -33,7 +33,8 @@ public class OrderServiceController {
         return String.format("It's Working in Order Service on PORT %s", env.getProperty("local.server.port"));
     }
     @PostMapping("/{userId}/orders")
-    public ResponseEntity<ResponseOrder> createOrder(@PathVariable("userId") String userId,  @RequestBody RequestOrder orderDetails){
+    public ResponseEntity<ResponseOrder> createOrder(@PathVariable("userId") String userId,
+                                                     @RequestBody RequestOrder orderDetails){
 
         ModelMapper mapper = new ModelMapper();
         mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
