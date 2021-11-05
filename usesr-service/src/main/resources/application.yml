@@ -22,7 +22,12 @@ eureka:
     fetch-registry: true
     register-with-eureka: true
     service-url:
-      defaultZone: http://localhost:8761/eureka
+      defaultZone: http://192.168.2.112:8761/eureka
 
 greeting:
   message: Welcome to the Simple E-commerce
+
+
+logging:
+  level:
+    com.example.userservice: DEBUG

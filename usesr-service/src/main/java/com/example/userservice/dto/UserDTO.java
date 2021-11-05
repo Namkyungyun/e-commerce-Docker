@@ -1,6 +1,6 @@
-package com.example.usesrservice.dto;
+package com.example.userservice.dto;
 
-import com.example.usesrservice.vo.ResponseOrder;
+import com.example.userservice.vo.ResponseOrder;
 import lombok.Data;
 
 import java.util.Date;

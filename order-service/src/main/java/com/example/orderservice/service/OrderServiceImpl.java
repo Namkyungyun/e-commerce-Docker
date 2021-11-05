@@ -4,6 +4,7 @@ import com.example.orderservice.dto.OrderDTO;
 import com.example.orderservice.jpa.OrderEntity;
 import com.example.orderservice.jpa.OrderRepository;
 import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,8 @@ import org.springframework.stereotype.Service;
 import java.util.UUID;
 
 @Service
+@Data
+@Slf4j
 public class OrderServiceImpl implements OrderService{
 
     OrderRepository orderRepository;
@@ -42,7 +45,7 @@ public class OrderServiceImpl implements OrderService{
         OrderEntity orderEntity = orderRepository.findByOrderId(orderId); //sql로 가져오기
 
         ModelMapper mapper = new ModelMapper();
-
+        mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
         OrderDTO orderDTO = mapper.map(orderEntity, OrderDTO.class);
 
         return orderDTO;
@@ -52,6 +55,6 @@ public class OrderServiceImpl implements OrderService{
     // 전체 주문 내역 조회
     @Override
     public Iterable<OrderEntity> getOrderByUserId(String userId) {
-        return orderRepository.findAll();
+        return orderRepository.findByUserId(userId);
     }
 }
