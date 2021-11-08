@@ -4,9 +4,14 @@ server:
 spring:
   application:
     name: config-service
+  profiles:
+    active: native
   cloud:
     config:
       server:
+        native:
+          search-locations: file://C:\Users\skaru\Desktop\native-repo
         git:
-          uri: file://C:\Users\skaru\Desktop\git-local-repo
+#          uri: file://C:\Users\skaru\Desktop\git-local-repo
+          uri: https://github.com/Namkyungyun/spring-cloud-config.git
 
