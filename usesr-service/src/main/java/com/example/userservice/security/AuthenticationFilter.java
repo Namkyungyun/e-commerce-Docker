@@ -1,13 +1,22 @@
 package com.example.userservice.security;
 
+import com.example.userservice.dto.UserDTO;
+import com.example.userservice.service.UserService;
 import com.example.userservice.vo.RequestLogin;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.jsonwebtoken.Jwt;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+import lombok.extern.java.Log;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.env.Environment;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.stereotype.Component;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -15,9 +24,23 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 
 @Slf4j
+@Component
 public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
+
+    private UserService userService;
+    private Environment env;
+
+    public AuthenticationFilter(AuthenticationManager authenticationManager,
+                                UserService userService,
+                                Environment env) {
+        super.setAuthenticationManager(authenticationManager);
+        this.userService = userService;
+        this.env = env;
+    }
+
     //인증 시도
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request,
@@ -45,7 +68,22 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
                                             FilterChain chain,
                                             Authentication authResult
                                             ) throws IOException, ServletException {
-        log.debug(((User)authResult.getPrincipal()).getUsername()); //성공 후 결과를 체크
+        String userName = ((User)authResult.getPrincipal()).getUsername(); //성공 후 이메일값
+        UserDTO userDetails = userService.getUserDetailsByEmail(userName); //이메일값으로 전체dto데이터
+
+        String token = Jwts.builder()
+                .setSubject(userDetails.getUserId())                                //userId로 토큰 만듦
+                .setExpiration(new Date(System.currentTimeMillis() +                //토큰 유효기간(뒷단이 string이므로 숫자로 parse)
+                        Long.parseLong(env.getProperty("token.expiration_time"))))
+                .signWith(SignatureAlgorithm.HS512, env.getProperty("token.secret"))//암호화: 알고리즘 넣기
+                .compact();
+
+
+        response.addHeader("token", token);
+        response.addHeader("userId", userDetails.getUserId());
+
+
+
 
     }
 }

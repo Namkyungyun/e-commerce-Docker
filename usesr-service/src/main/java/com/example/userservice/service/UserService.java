@@ -11,4 +11,6 @@ public interface UserService extends UserDetailsService {
     UserDTO getUserByUserId(String userId);
     //반복적인데이터
     Iterable<UserEntity> getUserByAll();
+
+    UserDTO getUserDetailsByEmail(String userName);
 }
