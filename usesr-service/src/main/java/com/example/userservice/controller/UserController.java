@@ -31,11 +31,16 @@ public class UserController {
 
     @Autowired
     private Greeting greeting;
-
+    
+    //configuration 정보 가져오기
     @GetMapping("/health_check")
     public String status(){
 
-        return String.format("It's Working in User Service on PORT %s", env.getProperty("local.server.port"));
+        return String.format("It's Working in User Service"
+                + ",port(local.server.port)=" + env.getProperty("local.server.port")
+                + ",port(server.port)=" + env.getProperty("server.port")
+                + ",token secret=" + env.getProperty("token.secret")
+                + ",token expiration time=" + env.getProperty("token.expiration_time"));
     }
 
     @GetMapping("/welcome")
@@ -43,6 +48,7 @@ public class UserController {
 //        return env.getProperty("greeting.message");
         return greeting.getMessage();
     }
+
     @PostMapping("/users")
     public ResponseEntity createUser(@RequestBody RequestUser user){
         ModelMapper mapper = new ModelMapper();
@@ -56,6 +62,8 @@ public class UserController {
 
         return ResponseEntity.status(HttpStatus.CREATED).body(responseUser);
     }
+
+
     @GetMapping("/users")
     public ResponseEntity<List<ResponseUser>> getUsers(){
         //1. UserEntity 가져오기
