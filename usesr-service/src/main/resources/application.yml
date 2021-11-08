@@ -22,7 +22,7 @@ eureka:
     fetch-registry: true
     register-with-eureka: true
     service-url:
-      defaultZone: http://192.168.0.219:8761/eureka
+      defaultZone: http://localhost:8761/eureka
 
 greeting:
   message: Welcome to the Simple E-commerce
@@ -32,7 +32,14 @@ logging:
   level:
     com.example.userservice: DEBUG
 
+
 #토큰의 만료(1일용), 토큰의 생성시 키값 넣기
-token:
-  expiration_time: 86400000
-  secret: user_token
+#token:
+#  expiration_time: 86400000
+#  secret: user_token
+management:
+  endpoints:
+    web:
+      exposure:
+        include: refresh, health, beans
+

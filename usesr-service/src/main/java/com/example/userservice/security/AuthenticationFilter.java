@@ -27,7 +27,6 @@ import java.util.ArrayList;
 import java.util.Date;
 
 @Slf4j
-@Component
 public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     private UserService userService;

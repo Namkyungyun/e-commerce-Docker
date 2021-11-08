@@ -38,10 +38,12 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
         http.csrf().disable();
         // uri가 /users/** 이면 인증을 모두 허용
 //        http.authorizeRequests().antMatchers("/users/**").permitAll();
-
+        
+        //actuator에 대해서는 인증을 거치지 않고 모두 허용
+        http.authorizeRequests().antMatchers("/actuator/**").permitAll();
         // 인증이 되어진 상태에서만 그 이후의 기능들을 제공되게 할 것임.
         http.authorizeRequests().antMatchers("/**")
-                .hasIpAddress("localhost")//ip를 제한적으로 받는다.
+                .hasIpAddress("192.168.2.112")//ip를 제한적으로 받는다.
                 .and()
                 .addFilter(getAuthenticationFilter()); // 인증처리를 하기위한 filter
 
