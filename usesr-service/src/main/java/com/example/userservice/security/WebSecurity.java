@@ -19,6 +19,8 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
     private BCryptPasswordEncoder bCryptPasswordEncoder;
     //생성된 JWT의 정보들을 가져오기위해 (application.yml 파일의 내용들을 가져오기위해) environment 추가
     private Environment env;
+
+
     @Autowired
     public WebSecurity(Environment env,
                        BCryptPasswordEncoder bCryptPasswordEncoder,
@@ -39,7 +41,7 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
 
         // 인증이 되어진 상태에서만 그 이후의 기능들을 제공되게 할 것임.
         http.authorizeRequests().antMatchers("/**")
-                .hasIpAddress("192.168.2.112")//ip를 제한적으로 받는다.
+                .hasIpAddress("localhost")//ip를 제한적으로 받는다.
                 .and()
                 .addFilter(getAuthenticationFilter()); // 인증처리를 하기위한 filter
 
@@ -52,8 +54,9 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
     //인증처리
     private AuthenticationFilter getAuthenticationFilter() throws Exception{
 
-        AuthenticationFilter authenticationFilter = new AuthenticationFilter(); //인스턴스 생성
-        authenticationFilter.setAuthenticationManager(authenticationManager()); //필터에 작업할 수 있는 매니저를 넣기.
+        AuthenticationFilter authenticationFilter
+                = new AuthenticationFilter(authenticationManager(), userService, env); //인스턴스 생성
+//        authenticationFilter.setAuthenticationManager(authenticationManager()); //필터에 작업할 수 있는 매니저를 넣기.
 
         return authenticationFilter;
     }

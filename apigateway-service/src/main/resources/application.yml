@@ -1,17 +1,17 @@
 server:
-  port: 8000
+  port: 8002
 
 spring:
   application:
     name: apigateway-service
   cloud:
     gateway:
-      default-filters:
-        - name: GlobalFilter
-          args:
-            baseMessage: Spring Cloud Gateway Global Filter
-            preLogger:  true
-            postLogger: true
+#      default-filters:
+#        - name: GlobalFilter
+#          args:
+#            baseMessage: Spring Cloud Gateway Global Filter
+#            preLogger:  true
+#            postLogger: true
       routes:
 #        - id: user-service
 #          uri: lb://USER-SERVICE
@@ -49,6 +49,7 @@ spring:
           filters:
 #            - RomoveRequestHeader=Cookie
             - RewritePath=/user-service/(?<segment>.*), /$\{segment}
+            - AuthorizationHeaderFilter
 #          filter:
 #            -CustomFilter
 #            -AddRequestHeader=first-request, first-requests-header2
@@ -57,4 +58,8 @@ eureka:
     register-with-eureka: true
     fetch-registry: true
     service-url:
-      defaultZone: http://192.168.2.112:8761/eureka
+      defaultZone: http://192.168.0.219:8761/eureka
+
+
+token:
+  secret: user_token
