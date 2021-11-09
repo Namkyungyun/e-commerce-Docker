@@ -2,4 +2,6 @@ spring:
   cloud:
     config:
       uri: http://192.168.2.112:8888
-      name: ecommerce
+      name: user-service
+#  profiles:
+#    active: native

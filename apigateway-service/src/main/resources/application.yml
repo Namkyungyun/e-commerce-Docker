@@ -4,6 +4,11 @@ server:
 spring:
   application:
     name: apigateway-service
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
   cloud:
     gateway:
 #      default-filters:
@@ -50,9 +55,16 @@ spring:
 #            - RomoveRequestHeader=Cookie
             - RewritePath=/user-service/(?<segment>.*), /$\{segment}
             - AuthorizationHeaderFilter
-#          filter:
-#            -CustomFilter
-#            -AddRequestHeader=first-request, first-requests-header2
+        - id: user-service
+          uri: lb://USER-SERVICE
+          predicates:
+            - Path=/user-service/actuator/**
+            - Method=GET,POST
+          filters:
+            - RewritePath=/user-service/(?<segment>.*), /$\{segment}
+
+
+
 eureka:
   client:
     register-with-eureka: true
@@ -60,6 +72,11 @@ eureka:
     service-url:
       defaultZone: http://localhost:8761/eureka
 
+#token:
+#  secret: user_token
 
-token:
-  secret: user_token
+management:
+  endpoints:
+    web:
+      exposure:
+        include: refresh, health, beans, httptrace, busrefresh
