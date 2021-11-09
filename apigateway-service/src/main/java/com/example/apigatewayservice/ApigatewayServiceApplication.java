@@ -6,6 +6,7 @@ import org.springframework.boot.actuate.trace.http.InMemoryHttpTraceRepository;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.context.annotation.Bean;
+import org.springframework.web.client.RestTemplate;
 
 @SpringBootApplication
 @EnableDiscoveryClient
@@ -19,6 +20,5 @@ public class ApigatewayServiceApplication {
     public HttpTraceRepository httpTraceRepository(){
         return new InMemoryHttpTraceRepository();
     }
-
 
 }
