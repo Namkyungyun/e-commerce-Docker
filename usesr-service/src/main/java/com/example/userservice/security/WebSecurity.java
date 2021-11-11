@@ -43,7 +43,7 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
         http.authorizeRequests().antMatchers("/actuator/**").permitAll();
         // 인증이 되어진 상태에서만 그 이후의 기능들을 제공되게 할 것임.
         http.authorizeRequests().antMatchers("/**")
-                .hasIpAddress("192.168.2.112")//ip를 제한적으로 받는다.
+                .hasIpAddress("192.168.2.117")//ip를 제한적으로 받는다.
                 .and()
                 .addFilter(getAuthenticationFilter()); // 인증처리를 하기위한 filter
 

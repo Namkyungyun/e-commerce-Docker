@@ -14,8 +14,12 @@ spring:
     hibernate:
       ddl-auto: update
   datasource:
-    driver-class-name: org.h2.Driver
-    url: jdbc:h2:mem:testdb
+#    driver-class-name: org.h2.Driver
+#    url: jdbc:h2:mem:testdb
+    url: jdbc:mariadb://localhost:3306/mydb
+    driver-class-name: org.mariadb.jdbc.Driver
+    username: root
+    password: test1357
 
 eureka:
   instance:
@@ -24,7 +28,7 @@ eureka:
     fetch-registry: true
     register-with-eureka: true
     service-url:
-      defaultZone: http://192.168.2.112:8761/eureka
+      defaultZone: http://localhost:8761/eureka
 
 logging:
   level:
