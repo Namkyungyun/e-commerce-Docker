@@ -55,16 +55,16 @@ public class OrderServiceController {
         orderDTO.setUserId(userId); //PathVariable을 통해 가져온 userId를 orderDTO에 넣기
 
         /* jpa 작업 */
-//        OrderDTO createOrder = orderService.createOrder(orderDTO);       // 변환된 orderDTO값 통해 비즈니스 로직 실행1
+        OrderDTO createOrder = orderService.createOrder(orderDTO);       // 변환된 orderDTO값 통해 비즈니스 로직 실행1
 //        ResponseOrder responseOrder = mapper.map(createOrder, ResponseOrder.class); //비즈니스로직을 거친 후 반환되어질 값을 유저에게 보여질 값인 responseOrder로 변환
 
         /* kafka 작업 */
-        orderDTO.setOrderId(UUID.randomUUID().toString());
-        orderDTO.setTotalPrice(orderDetails.getQty()*orderDetails.getUnitPrice());
+//        orderDTO.setOrderId(UUID.randomUUID().toString());
+//        orderDTO.setTotalPrice(orderDetails.getQty()*orderDetails.getUnitPrice());
 
         /* send this order to the kafka */
-        kafkaProducer.send("example-catalog-topic", orderDTO);
-        orderProducer.send("orders", orderDTO);
+//        kafkaProducer.send("example-catalog-topic", orderDTO);
+//        orderProducer.send("orders", orderDTO);
         /* topic에 데이터를 추가 */
 
         ResponseOrder responseOrder = mapper.map(orderDTO, ResponseOrder.class);
