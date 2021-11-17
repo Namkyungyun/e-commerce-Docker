@@ -19,6 +19,8 @@ spring:
         git:
 #          uri: file://C:\Users\skaru\Desktop\git-local-repo
           uri: https://github.com/Namkyungyun/spring-cloud-config.git
+
+
 management:
   endpoints:
     web:
